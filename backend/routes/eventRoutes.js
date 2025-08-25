@@ -1,10 +1,13 @@
 import express from 'express';
 import Event from '../models/event.js';
+import checkToken from '../middleware/checkToken.js';
+import ensureLoggedIn from '../middleware/ensureLoggedIn.js';
+import convertDomainNameToId from '../utils/convertDomainNameToId.js';
 
 const router = express.Router();
 
 // Create a new event
-router.post('/', async (req, res) => {
+router.post('/', checkToken, ensureLoggedIn, convertDomainNameToId, async (req, res) => {
     try {
         const event = new Event(req.body);
         await event.save();
@@ -15,7 +18,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all events
-router.get('/', async (req, res) => {
+router.get('/', checkToken, ensureLoggedIn, convertDomainNameToId, async (req, res) => {
     try {
         const events = await Event.find().populate('domain');
         res.json(events);
@@ -25,7 +28,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get event by ID
-router.get('/:id', async (req, res) => {
+router.get('/:id', checkToken, ensureLoggedIn, convertDomainNameToId, async (req, res) => {
     try {
         const event = await Event.findById(req.params.id).populate('domain');
         if (!event) return res.status(404).json({ error: 'Event not found' });
@@ -36,7 +39,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Update event by ID
-router.put('/:id', async (req, res) => {
+router.put('/:id', checkToken, ensureLoggedIn, convertDomainNameToId, async (req, res) => {
     try {
         const event = await Event.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
         if (!event) return res.status(404).json({ error: 'Event not found' });
@@ -47,7 +50,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete event by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', checkToken, ensureLoggedIn, convertDomainNameToId, async (req, res) => {
     try {
         const event = await Event.findByIdAndDelete(req.params.id);
         if (!event) return res.status(404).json({ error: 'Event not found' });
