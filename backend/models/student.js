@@ -44,17 +44,17 @@ const studentSchema = new Schema({
 
 })
 
-const ENCRYPTION_KEY = process.env.EMAIL_ENCRYPTION_KEY || '12345678901234567890123456789012';
-const IV = process.env.EMAIL_ENCRYPTION_IV || '1234567890123456';
+const ENCRYPTION_KEY = process.env.EMAIL_ENCRYPTION_KEY ;
+const IV = process.env.EMAIL_ENCRYPTION_IV;
 
-function encrypt(text) {
+const encrypt = function encrypt(text) {
     const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), IV);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
     return encrypted;
 }
 
-function decrypt(text) {
+const decrypt = function decrypt(text) {
     const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), IV);
     let decrypted = decipher.update(text, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
@@ -77,4 +77,4 @@ studentSchema.methods.verifyemail = function(email) {
 // Encrypt phone number
 
 const Student = mongoose.model("Student", studentSchema)
-export {Student}
+export {Student , encrypt , decrypt}
