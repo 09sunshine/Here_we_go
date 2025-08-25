@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 
-
-const app = app.express()
+dotenv.config({
+    path: "./.env"
+});
+const app = express()
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
