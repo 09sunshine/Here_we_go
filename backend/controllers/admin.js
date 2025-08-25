@@ -45,6 +45,25 @@ const dataController = {
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
+    },
+
+    logoutAdmin: (req, res) => {
+        res.clearCookie('token');
+        res.status(200).json({ message: "Logout successful" });
+    },
+
+    getAdminProfile: async (req, res) => {
+        try {
+            const id = req.id;
+            const admin = await Admin.findById(id).select('-password');
+            if (!admin) {
+                throw new Error("Admin not found");
+            }
+
+            res.status(200).json({ admin });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 };
 
