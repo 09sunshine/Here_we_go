@@ -7,7 +7,7 @@ const eventSchema = new Schema({
     time: { type: String, required: true },
     location: { type: String, required: true },
     createdBy: { type: String, required: true },
-    domains: [{ type: Schema.Types.ObjectId, ref: 'Domain', required: true }],
+    domains: [{ type: Schema.Types.ObjectId, ref: 'Domain', required: false }],
     status: { type: String, enum: ['open', 'closed'], default: 'open' }
 });
 

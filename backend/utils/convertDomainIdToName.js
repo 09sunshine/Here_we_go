@@ -1,6 +1,6 @@
-import Domain from "../models/domain";
+import Domain from "../models/domain.js";
 
-export const convertDomainNameToId = async (req, res, next) => {
+const convertDomainNameToId = async (req, res, next) => {
     try {
         const { domain } = req.body;
         if (domain) {
@@ -15,3 +15,5 @@ export const convertDomainNameToId = async (req, res, next) => {
         res.status(500).json({ error: err.message });
     }
 }
+
+export default convertDomainNameToId;
