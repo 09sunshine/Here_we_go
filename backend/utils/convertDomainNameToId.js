@@ -1,4 +1,4 @@
-import Domain from "../models/domain";
+import Domain from "../models/domain.js";
 
 export const convertDomainNameToId = async (req, res, next) => {
     try {
